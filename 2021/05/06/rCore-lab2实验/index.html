@@ -20,28 +20,35 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="除魔">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="实验一 [🔗实验要求] [🔗ch2分支实现代码]  本实验主要完成了实验要求的:   修改ch2的代码, 在遇到不支持的trap的时候不要panic , 而是返回-1 sys_write时增加对于物理内存的检查, 只能打印属于自己物理内存的信息, 超出则返回 -1 通过ch2的所有test  主要思路:  首先将内核栈和用户栈的长度都设置成4096,因为当前的用户进程只能运行在固定区域,所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="THU-OS 清华大学操作系统课程 lab2 实验">
+<meta property="og:url" content="http://example.com/2021/05/06/rCore-lab2%E5%AE%9E%E9%AA%8C/index.html">
 <meta property="og:site_name" content="除魔">
+<meta property="og:description" content="实验一 [🔗实验要求] [🔗ch2分支实现代码]  本实验主要完成了实验要求的:   修改ch2的代码, 在遇到不支持的trap的时候不要panic , 而是返回-1 sys_write时增加对于物理内存的检查, 只能打印属于自己物理内存的信息, 超出则返回 -1 通过ch2的所有test  主要思路:  首先将内核栈和用户栈的长度都设置成4096,因为当前的用户进程只能运行在固定区域,所">
 <meta property="og:locale">
+<meta property="article:published_time" content="2021-05-06T07:00:28.000Z">
+<meta property="article:modified_time" content="2021-05-06T07:36:00.440Z">
 <meta property="article:author" content="Qiming Zhai">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="RISC-V">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/05/06/rCore-lab2%E5%AE%9E%E9%AA%8C/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'cn'
   };
 </script>
 
-  <title>除魔</title>
+  <title>THU-OS 清华大学操作系统课程 lab2 实验 | 除魔</title>
   
 
 
@@ -154,116 +161,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="cn">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/06/rCore-lab1%E5%AE%9E%E9%AA%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Qiming Zhai">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="除魔">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/06/rCore-lab1%E5%AE%9E%E9%AA%8C/" class="post-title-link" itemprop="url">THU-OS 清华大学操作系统课程 lab1 实验</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-05-06 15:00:28 / Modified: 15:34:21" itemprop="dateCreated datePublished" datetime="2021-05-06T15:00:28+08:00">2021-05-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B8%85%E5%8D%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">清华操作系统课程</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.8k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>实验一 [🔗<a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/chapter1/5exercise.html">实验要求</a>] [🔗<a target="_blank" rel="noopener" href="https://github.com/zhaiqiming/rCore-Tutorial-v3/tree/ch1">ch1分支实现代码</a>]</li>
-</ul>
-<p>本实验主要完成了实验要求的: </p>
-<ul>
-<li>支持级别控制的日志</li>
-<li>支持不同级别的日志使用不同的颜色显示</li>
-</ul>
-<p>主要思路:</p>
-<ol>
-<li>使用不依赖std的<a target="_blank" rel="noopener" href="https://docs.rs/log/0.4.14/log/">log</a>库,参考rcore的logging实现</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">use core::fmt;</span><br><span class="line">use crate::console;</span><br><span class="line">use <span class="built_in">log</span>::&#123;self, Level, LevelFilter, Log, Metadata, Record&#125;;</span><br><span class="line"></span><br><span class="line">pub fn <span class="function"><span class="title">init</span></span>() &#123;</span><br><span class="line">    static LOGGER: Logger = Logger;</span><br><span class="line">    <span class="built_in">log</span>::set_logger(&amp;LOGGER).unwrap();</span><br><span class="line">    <span class="built_in">log</span>::set_max_level(match option_env!(<span class="string">&quot;LOG&quot;</span>) &#123;</span><br><span class="line">        Some(<span class="string">&quot;error&quot;</span>) =&gt; LevelFilter::Error,</span><br><span class="line">        Some(<span class="string">&quot;warn&quot;</span>) =&gt; LevelFilter::Warn,</span><br><span class="line">        Some(<span class="string">&quot;info&quot;</span>) =&gt; LevelFilter::Info,</span><br><span class="line">        Some(<span class="string">&quot;debug&quot;</span>) =&gt; LevelFilter::Debug,</span><br><span class="line">        Some(<span class="string">&quot;trace&quot;</span>) =&gt; LevelFilter::Trace,</span><br><span class="line">        _ =&gt; LevelFilter::Off,</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Logger;</span><br><span class="line">impl Log <span class="keyword">for</span> Logger &#123;</span><br><span class="line">    fn enabled(&amp;self, _metadata: &amp;Metadata) -&gt; bool &#123;</span><br><span class="line">        <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fn <span class="built_in">log</span>(&amp;self, record: &amp;Record) &#123;</span><br><span class="line">        <span class="keyword">if</span> !self.enabled(record.metadata()) &#123;</span><br><span class="line">            <span class="built_in">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>!(<span class="string">&quot;\x1b[&#123;&#125;m&quot;</span>, level_to_color_code(record.level()));</span><br><span class="line">        println!(<span class="string">&quot;[&#123;&#125;] &#123;&#125;&quot;</span>, record.level(), record.args());</span><br><span class="line">        <span class="built_in">print</span>!(<span class="string">&quot;\x1b[0m&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fn flush(&amp;self) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn level_to_color_code(level: Level) -&gt; u8 &#123;</span><br><span class="line">    match level &#123;</span><br><span class="line">        Level::Error =&gt; 31, // Red</span><br><span class="line">        Level::Warn =&gt; 93,  // BrightYellow</span><br><span class="line">        Level::Info =&gt; 34,  // Blue</span><br><span class="line">        Level::Debug =&gt; 32, // Green</span><br><span class="line">        Level::Trace =&gt; 90, // BrightBlack</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>问答作业:</p>
-<ul>
-<li>Q: 为了方便 os 处理，Ｍ态软件会将 S 态异常/中断委托给 S 态软件，请指出有哪些寄存器记录了委托信息，rustsbi 委托了哪些异常/中断？（也可以直接给出寄存器的值）<br>A: 在os/src/trap/trap.S中可以看到中断在保存完成之后会调用mod.rs中的trap_handler, 根据scause的内容选择不同处理流程;<br>   0-8号中断由rustsbi提供支持;<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#[no_mangle]</span></span><br><span class="line">pub fn trap_handler(cx: &amp;mut TrapContext) -&gt; &amp;mut TrapContext &#123;</span><br><span class="line">    <span class="built_in">let</span> scause = scause::<span class="built_in">read</span>();</span><br><span class="line">    <span class="built_in">let</span> stval = stval::<span class="built_in">read</span>();</span><br><span class="line">    match scause.<span class="function"><span class="title">cause</span></span>() &#123;</span><br><span class="line">        Trap::Exception(Exception::UserEnvCall) =&gt; &#123;</span><br><span class="line">            cx.sepc += 4;</span><br><span class="line">            cx.x[10] = syscall(cx.x[17], [cx.x[10], cx.x[11], cx.x[12]]) as usize;</span><br><span class="line">        &#125;</span><br><span class="line">        Trap::Exception(Exception::StoreFault) |</span><br><span class="line">        Trap::Exception(Exception::StorePageFault) =&gt; &#123;</span><br><span class="line">            println!(<span class="string">&quot;[kernel] PageFault in application, core dumped.&quot;</span>);</span><br><span class="line">            run_next_app();</span><br><span class="line">        &#125;</span><br><span class="line">        Trap::Exception(Exception::IllegalInstruction) =&gt; &#123;</span><br><span class="line">            println!(<span class="string">&quot;[kernel] IllegalInstruction in application, core dumped.&quot;</span>);</span><br><span class="line">            run_next_app();</span><br><span class="line">        &#125;</span><br><span class="line">        _ =&gt; &#123;</span><br><span class="line">            run_next_app();</span><br><span class="line">            // panic!(<span class="string">&quot;Unsupported trap &#123;:?&#125;, stval = &#123;:#x&#125;!&quot;</span>, scause.cause(), stval);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cx</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li>Q: 请学习 gdb 调试工具的使用(这对后续调试很重要)，并通过 gdb 简单跟踪从机器加电到跳转到 0x80200000 的简单过程。只需要描述重要的跳转即可，只需要描述在 qemu 上的情况。<br>A: 使用gdb加断点调试;  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tips:</span><br><span class="line">事实上进入 rustsbi 之后就不需要使用 gdb 调试了。可以直接阅读代码。rustsbi起始代码 。</span><br><span class="line">可以使用示例代码 Makefile 中的 make debug 指令。</span><br><span class="line">一些可能用到的 gdb 指令：</span><br><span class="line">x&#x2F;10i 0x80000000 : 显示 0x80000000 处的10条汇编指令。</span><br><span class="line">x&#x2F;10i $pc : 显示即将执行的10条汇编指令。</span><br><span class="line">x&#x2F;10xw 0x80000000 : 显示 0x80000000 处的10条数据，格式为16进制32bit。</span><br><span class="line">info register: 显示当前所有寄存器信息。</span><br><span class="line">info r t0: 显示 t0 寄存器的值。</span><br><span class="line">break funcname: 在目标函数第一条指令处设置断点。</span><br><span class="line">break *0x80200000: 在 0x80200000 出设置断点。</span><br><span class="line">continue: 执行直到碰到断点。</span><br><span class="line">si: 单步执行一条汇编指令。</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="cn">
@@ -279,10 +180,9 @@
       <meta itemprop="name" content="除魔">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/06/rCore-lab2%E5%AE%9E%E9%AA%8C/" class="post-title-link" itemprop="url">THU-OS 清华大学操作系统课程 lab2 实验</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          THU-OS 清华大学操作系统课程 lab2 实验
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -333,7 +233,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ul>
+        <ul>
 <li>实验一 [🔗<a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/chapter2/5exercise.html">实验要求</a>] [🔗<a target="_blank" rel="noopener" href="https://github.com/zhaiqiming/rCore-Tutorial-v3/tree/ch2">ch2分支实现代码</a>]</li>
 </ul>
 <p>本实验主要完成了实验要求的: </p>
@@ -367,126 +267,38 @@
 </li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+              <a href="/tags/rust/" rel="tag"># rust</a>
+              <a href="/tags/RISC-V/" rel="tag"># RISC-V</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="cn">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/28/THU-OS-%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B-Schedule/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Qiming Zhai">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="除魔">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/28/THU-OS-%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B-Schedule/" class="post-title-link" itemprop="url">THU-OS 清华大学操作系统课程 Schedule</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-28 15:00:28 / Modified: 15:18:38" itemprop="dateCreated datePublished" datetime="2021-04-28T15:00:28+08:00">2021-04-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B8%85%E5%8D%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">清华操作系统课程</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>253</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><a target="_blank" rel="noopener" href="https://os.cs.tsinghua.edu.cn/oscourse/OS2021spring">2021课程主页</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/rcore-os/rCore-Tutorial-v3">源码</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.hubwiz.com/2020/01/30/rust-macro/">Rust宏编程学习指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://simonkorl.gitbook.io/r-z-rustos-guide/introduction/what-is-this">rCore学习指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html">指导书</a></li>
-<li><a target="_blank" rel="noopener" href="https://rcore-os.github.io/rCore_tutorial_doc/chapter2/part3.html">老版指导书 - 有些新版没有的知识</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.xuetangx.com/course/thu08091002729/5883981?channel=search_result">视频</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/rcore-os/rCore/wiki/os-tutorial-summer-of-code#step-0-%E8%87%AA%E5%AD%A6rust%E7%BC%96%E7%A8%8B%E5%A4%A7%E7%BA%A67%E5%A4%A9">如何自学Rust &amp; RISC-V</a></li>
-<li><a target="_blank" rel="noopener" href="https://os.phil-opp.com/zh-CN/freestanding-rust-binary/#jian-jie">Rust 写OS</a></li>
-<li><a target="_blank" rel="noopener" href="https://learn-sys.github.io/cn/">计算机系统学习小组</a></li>
-<li><a target="_blank" rel="noopener" href="https://nju-projectn.github.io/ics-pa-gitbook/ics2020/">NJU 计算机系统基础(PA)</a></li>
-<li><a target="_blank" rel="noopener" href="https://cs61c.org/sp21/">CS61c 计算机组成与设计(软硬件接口RISC-V版) 对应课程</a></li>
-</ul>
-<h1 id="对于实验-实现可能存在bug-但是都通过了正确性测试中的所有case"><a href="#对于实验-实现可能存在bug-但是都通过了正确性测试中的所有case" class="headerlink" title="对于实验: 实现可能存在bug,但是都通过了正确性测试中的所有case"></a>对于实验: 实现可能存在bug,但是都通过了<a target="_blank" rel="noopener" href="https://github.com/DeathWish5/rCore_tutorial_tests">正确性测试</a>中的所有case</h1><ul>
-<li> [<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhaiqiming2010/article/details/115460934">Lab1实验报告</a>] 完成了支持log 级别控制的彩色log输出</li>
-<li> [<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhaiqiming2010/article/details/115462000">Lab2实验报告</a>] 完成了sys_write的访问物理内存的控制</li>
-<li>lab3的报告等lab4做完一起写下</li>
-<li>lab4正在读代码</li>
-</ul>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/28/THU-OS-%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B-Schedule/" rel="prev" title="THU-OS 清华大学操作系统课程 Schedule">
+      <i class="fa fa-chevron-left"></i> THU-OS 清华大学操作系统课程 Schedule
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/06/rCore-lab1%E5%AE%9E%E9%AA%8C/" rel="next" title="THU-OS 清华大学操作系统课程 lab1 实验">
+      THU-OS 清华大学操作系统课程 lab1 实验 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
